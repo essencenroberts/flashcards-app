@@ -7,7 +7,7 @@ function loadState(fallbackState) {
 		if (!storedValue) return fallbackState;
 
 		const parsedState = JSON.parse(storedValue);
-		if (parsedState?.version !== STORAGE_VERSION || !parsedState.data) {
+		if (parsedState?.version !== STORAGE_VERSION || !isValidState(parsedState.data)) {
 			return fallbackState;
 		}
 
@@ -15,6 +15,28 @@ function loadState(fallbackState) {
 	} catch {
 		return fallbackState;
 	}
+}
+
+function isValidState(state) {
+	if (!state || !Array.isArray(state.decks)) return false;
+	if (state.activeDeckId !== undefined && (typeof state.activeDeckId !== 'number' || !Number.isFinite(state.activeDeckId))) return false;
+	if (state.theme !== undefined && !['light', 'rainbow'].includes(state.theme)) return false;
+	const cardIds = new Set();
+
+	return state.decks.every((deck) =>
+		typeof deck?.id === 'number' &&
+		Number.isFinite(deck.id) &&
+		typeof deck.name === 'string' &&
+		Array.isArray(deck.cards) &&
+		deck.cards.every((card) =>
+			typeof card?.id === 'number' &&
+			Number.isFinite(card.id) &&
+			!cardIds.has(card.id) &&
+			cardIds.add(card.id) &&
+			typeof card.question === 'string' &&
+			typeof card.answer === 'string'
+		)
+	);
 }
 
 function saveState(state) {

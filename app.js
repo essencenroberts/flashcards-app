@@ -77,6 +77,13 @@ function resetFlipState() {
 
 function renderDecks() {
 	deckList.replaceChildren();
+	if (decks.length === 0) {
+		const emptyItem = document.createElement('li');
+		emptyItem.className = 'empty-state';
+		emptyItem.innerHTML = '<span class="empty-state-icon" aria-hidden="true">+</span><strong>No decks yet</strong><span>Create a deck to organize your cards.</span><button type="button" data-empty-new-deck>Add Deck</button>';
+		deckList.append(emptyItem);
+		return;
+	}
 
 	decks.forEach((deck) => {
 		const item = document.createElement('li');
@@ -237,6 +244,13 @@ function renderCard() {
 
 function renderCardList() {
 	cardList.replaceChildren();
+	if (cards.length > 0 && visibleCards.length === 0 && searchQuery) {
+		const emptyItem = document.createElement('li');
+		emptyItem.className = 'empty-state';
+		emptyItem.innerHTML = '<span class="empty-state-icon" aria-hidden="true">?</span><strong>No cards found</strong><span>Try another keyword or clear your search.</span><button type="button" data-clear-search>Clear search</button>';
+		cardList.append(emptyItem);
+		return;
+	}
 	if (cards.length === 0) {
 		const emptyItem = document.createElement('li');
 		emptyItem.className = 'empty-state';
@@ -302,6 +316,7 @@ searchInput.addEventListener('input', (event) => {
 		);
 		currentIndex = 0;
 		resetFlipState();
+		renderCardList();
 		renderCard();
 	}, 300);
 });
@@ -401,8 +416,8 @@ document.querySelector('#cancel-card-modal').addEventListener('click', closeCard
 
 deckList.addEventListener('click', (event) => {
 	const target = event.target;
-	if (target.matches('[data-empty-new-card]')) {
-		openCardModal();
+	if (target.matches('[data-empty-new-deck]')) {
+		openDeckModal();
 		return;
 	}
 	const deckId = Number(target.dataset.deckId);
@@ -471,6 +486,22 @@ cardModal.addEventListener('keydown', (event) => handleModalKeydown(cardModal, e
 
 cardList.addEventListener('click', (event) => {
 	const target = event.target;
+	if (target.matches('[data-empty-new-card]')) {
+		openCardModal();
+		return;
+	}
+	if (target.matches('[data-clear-search]')) {
+		clearTimeout(searchDebounceId);
+		searchInput.value = '';
+		searchQuery = '';
+		visibleCards = [...cards];
+		currentIndex = 0;
+		resetFlipState();
+		renderCardList();
+		renderCard();
+		searchInput.focus();
+		return;
+	}
 	if (target.matches('[data-edit-card-id]')) {
 		const card = cards.find((item) => item.id === Number(target.dataset.editCardId));
 		if (card) openCardModal(card);

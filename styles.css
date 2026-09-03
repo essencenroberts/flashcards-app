@@ -15,15 +15,39 @@
 }
 
 body.rainbow-theme {
-  --color-background: #fff7fb;
-  --color-surface: #ffffff;
+  --color-background: #fff9fc;
+  --color-surface: #fffefe;
   --color-text: #332b45;
   --color-muted: #6e6380;
-  --color-primary: #d14d8b;
-  --color-primary-soft: #ffe1ef;
-  --color-border: #f0bfd5;
-  --shadow: 0 8px 24px rgb(209 77 139 / 16%);
-  background: linear-gradient(135deg, #fff7fb, #fff8dd 45%, #eafcff);
+  --color-primary: #9b5de5;
+  --color-primary-soft: #eee2ff;
+  --color-border: #d9c4f2;
+  --rainbow-red: #ffc7d9;
+  --rainbow-orange: #ffd8b8;
+  --rainbow-yellow: #fff0b8;
+  --rainbow-green: #c9edc4;
+  --rainbow-blue: #c4e5ff;
+  --rainbow-violet: #ddccff;
+  --shadow: 0 8px 24px rgb(155 93 229 / 16%);
+  background: linear-gradient(
+    120deg,
+    var(--rainbow-red),
+    var(--rainbow-orange) 20%,
+    var(--rainbow-yellow) 40%,
+    var(--rainbow-green) 60%,
+    var(--rainbow-blue) 80%,
+    var(--rainbow-violet)
+  );
+}
+
+body.rainbow-theme .card-side,
+body.rainbow-theme .card-preview,
+body.rainbow-theme .modal-panel {
+  border-color: var(--rainbow-violet);
+}
+
+body.rainbow-theme aside {
+  border-color: var(--rainbow-green);
 }
 
 @media (prefers-color-scheme: dark) {

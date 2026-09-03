@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css" />
+  <title>Flashcards App</title>
+</head>
+<body>
+  <header>
+    <h1>Flashcards</h1>
+    <div class="header-actions">
+      <button id="theme-toggle" type="button" aria-pressed="false">Pastel rainbow mode</button>
+      <button id="new-deck-button" type="button">New Deck</button>
+    </div>
+  </header>
+
+  <div class="app-layout">
+    <aside aria-label="Decks">
+      <h2>Decks</h2>
+      <nav aria-label="Flashcard decks">
+        <ul id="deck-list"></ul>
+      </nav>
+      <div class="study-navigation" aria-label="Study mode">
+        <button id="start-study-button" type="button">Start Study</button>
+        <button id="exit-study-button" type="button" hidden>Exit Study</button>
+      </div>
+    </aside>
+
+    <main>
+      <section aria-labelledby="cards-heading">
+        <div class="section-heading">
+          <div>
+            <p id="active-deck-name" class="eyebrow">General deck</p>
+            <h2 id="cards-heading">Flashcards</h2>
+          </div>
+          <span id="card-count" class="card-count" aria-live="polite">1 of 3</span>
+        </div>
+
+        <div class="toolbar" aria-label="Card tools">
+          <label class="search-field" for="card-search">
+            <span>Search cards</span>
+            <input id="card-search" type="search" placeholder="Search cards..." />
+          </label>
+          <button id="shuffle-button" type="button">Shuffle</button>
+          <button id="new-card-button" type="button">New Card</button>
+        </div>
+
+        <div id="study-overlay" class="study-overlay" aria-labelledby="study-title">
+          <div class="study-backdrop" data-close-study></div>
+          <div class="study-panel">
+            <div class="study-heading">
+              <h3 id="study-title">Study mode</h3>
+              <button id="exit-study-modal-button" type="button">Exit Study</button>
+            </div>
+            <article class="flashcard" aria-live="polite">
+              <button id="card-face" class="card-face" type="button" aria-label="Flip card">
+                <span class="card-face-inner">
+                  <span class="card-side card-front">
+                    <span class="card-label">Front</span>
+                    <span id="card-front-content">What is semantic HTML?</span>
+                  </span>
+                  <span class="card-side card-back" aria-hidden="true">
+                    <span class="card-label">Back</span>
+                    <span id="card-back-content">HTML elements that communicate meaning and structure.</span>
+                  </span>
+                </span>
+              </button>
+            </article>
+
+            <div class="card-controls" aria-label="Card navigation">
+              <button id="previous-button" type="button" aria-label="Previous card">Previous</button>
+              <button id="flip-button" type="button">Flip</button>
+              <button id="next-button" type="button" aria-label="Next card">Next</button>
+            </div>
+          </div>
+        </div>
+
+        <section class="card-list-section" aria-labelledby="card-list-heading">
+          <h3 id="card-list-heading">Cards in this deck</h3>
+          <ul id="card-list" class="card-list"></ul>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div id="card-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="card-modal-title" hidden>
+    <div class="modal-backdrop" data-close-card-modal></div>
+    <section class="modal-panel">
+      <div class="modal-heading">
+        <h2 id="card-modal-title">Create a new card</h2>
+        <button id="close-card-modal" class="modal-close" type="button" aria-label="Close dialog">&times;</button>
+      </div>
+      <form id="card-form">
+        <label for="card-front">Front</label>
+        <textarea id="card-front" name="front" rows="3" required></textarea>
+        <label for="card-back">Back</label>
+        <textarea id="card-back" name="back" rows="3" required></textarea>
+        <div class="modal-actions">
+          <button id="cancel-card-modal" type="button">Cancel</button>
+          <button id="card-submit-button" type="submit">Save card</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <div id="deck-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="deck-modal-title" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <section class="modal-panel">
+      <div class="modal-heading">
+        <h2 id="deck-modal-title">Create a new deck</h2>
+        <button id="close-deck-modal" class="modal-close" type="button" aria-label="Close dialog">&times;</button>
+      </div>
+      <form id="deck-form">
+        <label for="deck-name">Deck name</label>
+        <input id="deck-name" name="deck-name" type="text" required />
+        <div class="modal-actions">
+          <button id="cancel-deck-modal" type="button">Cancel</button>
+          <button id="deck-submit-button" type="submit">Create deck</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <footer>
+    <p>Click a card to flip it. Use Previous and Next to navigate.</p>
+    <p>&copy; 2026 Flashcards App</p>
+  </footer>
+
+  <script src="storage.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
